@@ -4,7 +4,7 @@ reporting in word
 Reporting Analysis done with R into a Word Document
 ---------------------------------------------------
 
-### We will use **R** to analyse the [Bank Marketing](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) dataset and apply a **Logistic Regression** model on it, then deliver results in a **Word** document.
+### We will use **R** to analyse the [Bank Marketing](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) dataset and apply a **Logistic Regression** model on it to predict if the client will subscribe a term deposit (variable y), then deliver results in a **Word** document using R officer & flextable libraries.
 
 ``` r
 options(warn = -1)
