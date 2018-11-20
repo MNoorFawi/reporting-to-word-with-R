@@ -418,42 +418,42 @@ body_add_img(docx, src = "threshold.png", height = 4, width = 5)
 ```
 
 ``` r
-body_add_par(docx, "The model seems to classify well at probablity: 0.12",
+body_add_par(docx, "The model seems to classify well at probablity: 0.15",
              style = "Normal")
 body_add_par(docx, "", style = "Normal")
 body_add_par(docx, "Evaluating the Model", 
              style = "heading 2")
 body_add_par(docx, "- Measuring Model Accuracy: ", style = "Normal")
 
-(tab <- table(train$pred >= 0.12, train$y))
+(tab <- table(train$pred >= 0.15, train$y))
 ```
 
     ##        
     ##           no  yes
-    ##   FALSE 2690   74
-    ##   TRUE   508  344
+    ##   FALSE 2803  103
+    ##   TRUE   395  315
 
 ``` r
 (`train accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 ```
 
-    ## [1] 0.84
+    ## [1] 0.86
 
 ``` r
 test$pred <- predict(glmmodel, newdata = test, type = "response")
-(tab <- table(test$pred >= 0.12, test$y))
+(tab <- table(test$pred >= 0.15, test$y))
 ```
 
     ##        
     ##          no yes
-    ##   FALSE 683  15
-    ##   TRUE  119  88
+    ##   FALSE 707  20
+    ##   TRUE   95  83
 
 ``` r
 (`test accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 ```
 
-    ## [1] 0.85
+    ## [1] 0.87
 
 ``` r
 accuracy <- t(cbind(`train accuracy`, `test accuracy`))
@@ -475,7 +475,8 @@ ft <- eval(parse(text = exp))
 ft <- ft %>% bold(j = 1) %>% font(fontname = "Arial") %>%
   fontsize(size = 11) %>% border_remove() %>% autofit() %>%
   align(align = "left", part = "all") %>% 
-  color(i = 2, j = 2, color = "darkblue")
+  color(i = 2, j = 2, color = "darkblue") %>%
+  bold(j = 2, i = 2)
 flextable::body_add_flextable(docx, value = ft, align = "left")
 ```
 
