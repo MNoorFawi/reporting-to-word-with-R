@@ -186,7 +186,7 @@ ggplot(age_balance_duration, aes(x = value, fill = y)) +
   theme(legend.position = "top")
 ```
 
-![](do_files/figure-markdown_github/visual-1.png)
+![](docx_files/figure-markdown_github/visual-1.png)
 
 ``` r
 filepath <- "."
@@ -206,7 +206,7 @@ ggplot(age_balance_duration, aes(x = value, y = as.numeric(y))) +
   theme_minimal() + ylab("Subscription")
 ```
 
-![](do_files/figure-markdown_github/rel-1.png)
+![](docx_files/figure-markdown_github/rel-1.png)
 
 ``` r
 filename <- paste0(dirname(filepath), "/scatter.png")
@@ -322,7 +322,7 @@ ggplot(cat_melted, aes(x = value, fill = y)) +
   scale_fill_brewer(palette = "Paired")
 ```
 
-![](do_files/figure-markdown_github/cats-1.png)
+![](docx_files/figure-markdown_github/cats-1.png)
 
 ``` r
 ggsave("catvars.png", height = 5, width = 7)
@@ -409,7 +409,7 @@ ggplot(train, aes(x = pred, fill = y)) +
   scale_fill_brewer(palette = "Set1") + theme_minimal()
 ```
 
-![](do_files/figure-markdown_github/modeling-1.png)
+![](docx_files/figure-markdown_github/modeling-1.png)
 
 ``` r
 ggsave("threshold.png", height = 4, width = 5)
