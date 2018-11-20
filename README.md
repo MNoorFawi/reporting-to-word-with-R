@@ -244,6 +244,8 @@ ggsave("daymonthjob.png",
        arrangeGrob(gg, gg2, gg3), height = 4, width = 7)
 body_add_img(docx, src = "daymonthjob.png", height = 4, width = 7)
 ```
+![](docx_files/figure-markdown_github/daymonthjob.png)
+
 ``` r
 body_add_par(docx, "", style = "Normal")
 body_add_par(docx, "- Visualizing frequency of categorical variables and their relationship with y: ", style = "Normal")
