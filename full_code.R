@@ -8,7 +8,6 @@ library(ggplot2)
 library(reshape)
 library(dplyr)
 library(gridExtra)
-library(e1071)
 
 data <- read.csv("bank.csv", sep = ";")
 str(data)
