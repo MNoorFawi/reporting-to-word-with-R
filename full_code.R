@@ -291,7 +291,7 @@ ggplot(train, aes(x = pred, fill = y)) +
   scale_fill_brewer(palette = "Set1") + theme_minimal()
 ggsave("threshold.png", height = 4, width = 5)
 body_add_img(docx, src = "threshold.png", height = 4, width = 5)
-body_add_par(docx, "The model seems to classify well at probablity: 0.12",
+body_add_par(docx, "The model seems to classify well at probablity: 0.15",
              style = "Normal")
 
 body_add_par(docx, "", style = "Normal")
@@ -299,10 +299,10 @@ body_add_par(docx, "Evaluating the Model",
              style = "heading 2")
 body_add_par(docx, "- Measuring Model Accuracy: ", style = "Normal")
 
-(tab <- table(train$pred >= 0.12, train$y))
+(tab <- table(train$pred >= 0.15, train$y))
 (`train accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 test$pred <- predict(glmmodel, newdata = test, type = "response")
-(tab <- table(test$pred >= 0.12, test$y))
+(tab <- table(test$pred >= 0.15, test$y))
 (`test accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 accuracy <- t(cbind(`train accuracy`, `test accuracy`))
 accuracy <- as.data.frame(cbind(rownames(accuracy), accuracy))
@@ -323,7 +323,8 @@ ft <- eval(parse(text = exp))
 ft <- ft %>% bold(j = 1) %>% font(fontname = "Arial") %>%
   fontsize(size = 11) %>% border_remove() %>% autofit() %>%
   align(align = "left", part = "all") %>% 
-  color(i = 2, j = 2, color = "darkblue")
+  color(i = 2, j = 2, color = "darkblue") %>%
+  bold(j = 2, i = 2)
 flextable::body_add_flextable(docx, value = ft, align = "left")
 
 print(docx, target = "report.docx")
