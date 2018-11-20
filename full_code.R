@@ -329,4 +329,3 @@ flextable::body_add_flextable(docx, value = ft, align = "left")
 
 print(docx, target = "report.docx")
 
-
