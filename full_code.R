@@ -8,6 +8,7 @@ library(ggplot2)
 library(reshape)
 library(dplyr)
 library(gridExtra)
+library(ROCR)
 
 data <- read.csv("bank.csv", sep = ";")
 str(data)
@@ -291,7 +292,35 @@ ggplot(train, aes(x = pred, fill = y)) +
   scale_fill_brewer(palette = "Set1") + theme_minimal()
 ggsave("threshold.png", height = 4, width = 5)
 body_add_img(docx, src = "threshold.png", height = 4, width = 5)
-body_add_par(docx, "The model seems to classify well at probablity: 0.15",
+body_add_par(docx, "", style = "Normal")
+
+predobj <- prediction(train$pred, train$y)
+perf <- performance(predobj, "sens", "spec")
+sensitivity <- perf@y.values[[1]]
+specificity <- perf@x.values[[1]]
+acc <- performance(predobj, "acc")
+accuracy <- acc@y.values[[1]]
+error.rate <- 1 - accuracy
+threshold <- acc@x.values[[1]]
+errors <- data.frame(cbind(threshold,
+                           cbind(error.rate,
+                                 cbind(
+                                   accuracy,
+                                   cbind(sensitivity, specificity)
+                                 ))))
+
+error.data <- melt(errors, id.vars = "threshold")
+ggplot(error.data, aes(x = threshold, y = value, 
+                       col = variable, linetype = variable)) + 
+  geom_line() + theme_minimal() +
+  scale_color_brewer(palette = "Set1") + 
+  scale_x_continuous(breaks = seq(0, 1, 0.1)) +
+  theme(legend.position = "top")
+
+ggsave("threshold2.png", height = 4, width = 5)
+body_add_img(docx, src = "threshold2.png", height = 4, width = 5)
+
+body_add_par(docx, "The model seems to classify well at probablity: 0.12",
              style = "Normal")
 
 body_add_par(docx, "", style = "Normal")
@@ -299,10 +328,10 @@ body_add_par(docx, "Evaluating the Model",
              style = "heading 2")
 body_add_par(docx, "- Measuring Model Accuracy: ", style = "Normal")
 
-(tab <- table(train$pred >= 0.15, train$y))
+(tab <- table(train$pred >= 0.12, train$y))
 (`train accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 test$pred <- predict(glmmodel, newdata = test, type = "response")
-(tab <- table(test$pred >= 0.15, test$y))
+(tab <- table(test$pred >= 0.12, test$y))
 (`test accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 accuracy <- t(cbind(`train accuracy`, `test accuracy`))
 accuracy <- as.data.frame(cbind(rownames(accuracy), accuracy))
