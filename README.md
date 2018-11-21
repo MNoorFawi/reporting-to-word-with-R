@@ -14,6 +14,7 @@ library(ggplot2)
 library(reshape)
 library(dplyr)
 library(gridExtra)
+library(ROCR)
 ```
 
 ``` r
@@ -416,44 +417,75 @@ ggplot(train, aes(x = pred, fill = y)) +
 ggsave("threshold.png", height = 4, width = 5)
 body_add_img(docx, src = "threshold.png", height = 4, width = 5)
 ```
+```r
+body_add_par(docx, "", style = "Normal")
+predobj <- prediction(train$pred, train$y)
+perf <- performance(predobj, "sens", "spec")
+sensitivity <- perf@y.values[[1]]
+specificity <- perf@x.values[[1]]
+acc <- performance(predobj, "acc")
+accuracy <- acc@y.values[[1]]
+error.rate <- 1 - accuracy
+threshold <- acc@x.values[[1]]
+errors <- data.frame(cbind(threshold,
+                           cbind(error.rate,
+                                 cbind(
+                                   accuracy,
+                                   cbind(sensitivity, specificity)
+                                 ))))
+
+error.data <- melt(errors, id.vars = "threshold")
+ggplot(error.data, aes(x = threshold, y = value, 
+                       col = variable, linetype = variable)) + 
+  geom_line() + theme_minimal() +
+  scale_color_brewer(palette = "Set1") + 
+  scale_x_continuous(breaks = seq(0, 1, 0.1)) +
+  theme(legend.position = "top")
+```
+![](docx_files/figure-markdown_github/threshold2.png)
+
+```r
+ggsave("threshold2.png", height = 4, width = 5)
+body_add_img(docx, src = "threshold2.png", height = 4, width = 5)
+```
 
 ``` r
-body_add_par(docx, "The model seems to classify well at probablity: 0.15",
+body_add_par(docx, "The model seems to classify well at probablity: 0.12",
              style = "Normal")
 body_add_par(docx, "", style = "Normal")
 body_add_par(docx, "Evaluating the Model", 
              style = "heading 2")
 body_add_par(docx, "- Measuring Model Accuracy: ", style = "Normal")
 
-(tab <- table(train$pred >= 0.15, train$y))
+(tab <- table(train$pred >= 0.12, train$y))
 ```
 
     ##        
     ##           no  yes
-    ##   FALSE 2803  103
-    ##   TRUE   395  315
+    ##   FALSE 2690   74
+    ##   TRUE   508  344
 
 ``` r
 (`train accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 ```
 
-    ## [1] 0.86
+    ## [1] 0.84
 
 ``` r
 test$pred <- predict(glmmodel, newdata = test, type = "response")
-(tab <- table(test$pred >= 0.15, test$y))
+(tab <- table(test$pred >= 0.12, test$y))
 ```
 
     ##        
     ##          no yes
-    ##   FALSE 707  20
-    ##   TRUE   95  83
+    ##   FALSE 683  15
+    ##   TRUE  119  88
 
 ``` r
 (`test accuracy` <- round((tab[1, 1] + tab[2, 2]) / sum(tab), 2))
 ```
 
-    ## [1] 0.87
+    ## [1] 0.85
 
 ``` r
 accuracy <- t(cbind(`train accuracy`, `test accuracy`))
