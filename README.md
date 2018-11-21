@@ -248,7 +248,8 @@ body_add_img(docx, src = "daymonthjob.png", height = 4, width = 7)
 
 ``` r
 body_add_par(docx, "", style = "Normal")
-body_add_par(docx, "- Visualizing frequency of categorical variables and their relationship with y: ", style = "Normal")
+body_add_par(docx, "- Visualizing frequency of categorical variables and their relationship with y: ",
+             style = "Normal")
 
 # function (not in)
 '%!in%' <- function(x, y)
@@ -336,7 +337,8 @@ body_add_break(docx)
 body_add_par(docx, "Modeling Data", style = "heading 1")
 body_add_par(docx, "Preparing data for modeling", 
              style = "heading 2")
-body_add_par(docx, "- one hot encoding of categorical variables and normalizing numeric ones", style = "Normal")
+body_add_par(docx, "- one hot encoding of categorical variables and normalizing numeric ones", 
+             style = "Normal")
 body_add_par(docx, paste("dimenstions of original data:",
                          paste(dim(data), collapse = " , ")),
              style = "Normal")
